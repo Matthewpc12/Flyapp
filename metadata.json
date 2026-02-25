@@ -1,0 +1,5 @@
+{
+  "name": "YifyFlix",
+  "description": "A Netflix-like movie browsing app using the Yify API.",
+  "requestFramePermissions": []
+}
