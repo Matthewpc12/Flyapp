@@ -1,6 +1,6 @@
 import { YTSResponse } from "../types";
 
-const BASE_URL = "https://yts.mx/api/v2";
+const BASE_URL = "/api";
 
 export const fetchMovies = async (
   page: number = 1,
@@ -8,7 +8,7 @@ export const fetchMovies = async (
   limit: number = 20,
 ): Promise<YTSResponse> => {
   try {
-    const url = new URL(`${BASE_URL}/list_movies.json`);
+    const url = new URL(`${window.location.origin}${BASE_URL}/movies`);
     url.searchParams.append("page", page.toString());
     url.searchParams.append("limit", limit.toString());
     if (queryTerm) {
