@@ -18,6 +18,7 @@ export const MovieModal: React.FC<MovieModalProps> = ({ movie, onClose }) => {
     { id: 'embedsu', name: 'Server 3 (Embed.su)', url: (imdb: string) => `https://embed.su/embed/movie/${imdb}` },
     { id: 'autoembed', name: 'Server 4 (AutoEmbed)', url: (imdb: string) => `https://autoembed.to/movie/imdb/${imdb}` },
     { id: 'multiembed', name: 'Server 5 (MultiEmbed)', url: (imdb: string) => `https://multiembed.mov/directstream.php?video_id=${imdb}` },
+    { id: '2embed', name: 'Server 6 (2Embed)', url: (imdb: string) => `https://www.2embed.cc/embed/${imdb}` },
   ];
 
   useEffect(() => {
