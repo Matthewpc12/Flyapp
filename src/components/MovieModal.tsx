@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Movie } from "../types";
-import { X, Star, Clock, Calendar, Play, Download } from "lucide-react";
+import { X, Star, Clock, Calendar, Play, Download, Magnet } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
 interface MovieModalProps {
@@ -40,6 +40,20 @@ export const MovieModal: React.FC<MovieModalProps> = ({ movie, onClose }) => {
   };
 
   const currentServerUrl = servers.find(s => s.id === selectedServer)?.url(movie.imdb_code) || servers[0].url(movie.imdb_code);
+
+  const getMagnetLink = (hash: string, title: string) => {
+    const trackers = [
+      'udp://open.demonii.com:1337/announce',
+      'udp://tracker.openbittorrent.com:80',
+      'udp://tracker.coppersurfer.tk:6969',
+      'udp://glotorrents.pw:6969/announce',
+      'udp://tracker.opentrackr.org:1337/announce',
+      'udp://p4p.arenabg.com:1337',
+      'udp://tracker.leechers-paradise.org:6969'
+    ];
+    const trString = trackers.map(tr => `&tr=${encodeURIComponent(tr)}`).join('');
+    return `magnet:?xt=urn:btih:${hash}&dn=${encodeURIComponent(title)}${trString}`;
+  };
 
   return (
     <AnimatePresence>
@@ -226,9 +240,16 @@ export const MovieModal: React.FC<MovieModalProps> = ({ movie, onClose }) => {
                                 <Play className="h-4 w-4" />
                               </button>
                               <a 
+                                href={getMagnetLink(torrent.hash, movie.title)}
+                                className="p-2 rounded hover:bg-zinc-700 text-zinc-400 hover:text-white transition-colors"
+                                title="Magnet Link (Opens Torrent Client)"
+                              >
+                                <Magnet className="h-4 w-4" />
+                              </a>
+                              <a 
                                 href={torrent.url}
                                 className="p-2 rounded hover:bg-zinc-700 text-zinc-400 hover:text-white transition-colors"
-                                title="Download Torrent"
+                                title="Download .torrent File"
                               >
                                 <Download className="h-4 w-4" />
                               </a>
