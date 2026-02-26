@@ -22,6 +22,9 @@ const GENRES = [
 ];
 
 export default function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [passwordInput, setPasswordInput] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
   const [movies, setMovies] = useState<Movie[]>([]);
   const [topMovie, setTopMovie] = useState<Movie | null>(null);
   const [page, setPage] = useState(1);
@@ -118,6 +121,50 @@ export default function App() {
     setSelectedGenre(genre);
     setSearchQuery(""); // Clear search when changing genre
   };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-zinc-950 flex items-center justify-center px-4">
+        <div className="max-w-md w-full bg-zinc-900 p-8 rounded-xl border border-zinc-800 shadow-2xl">
+          <div className="flex items-center justify-center gap-2 text-red-600 mb-8">
+            <Film className="h-10 w-10" />
+            <h1 className="text-3xl font-black tracking-tighter">YIFYFLIX</h1>
+          </div>
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            if (passwordInput === "MusizFRL5643") {
+              setIsAuthenticated(true);
+            } else {
+              setPasswordError(true);
+            }
+          }} className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-zinc-400 mb-2">Enter Password</label>
+              <input
+                type="password"
+                value={passwordInput}
+                onChange={(e) => {
+                  setPasswordInput(e.target.value);
+                  setPasswordError(false);
+                }}
+                className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-red-600 transition-colors"
+                placeholder="Password"
+              />
+              {passwordError && (
+                <p className="text-red-500 text-sm mt-2">Incorrect password</p>
+              )}
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg transition-colors"
+            >
+              Enter
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white selection:bg-red-600/30">
