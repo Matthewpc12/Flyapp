@@ -7,11 +7,27 @@ const BASE_URLS = [
   "https://api.codetabs.com/v1/proxy?quest=https://movies-api.accel.li/api/v2"
 ];
 
+export interface FetchMoviesOptions {
+  page?: number;
+  queryTerm?: string;
+  limit?: number;
+  genre?: string;
+  sortBy?: string;
+  orderBy?: string;
+}
+
 export const fetchMovies = async (
-  page: number = 1,
-  queryTerm: string = "",
-  limit: number = 20,
+  options: FetchMoviesOptions = {}
 ): Promise<YTSResponse> => {
+  const {
+    page = 1,
+    queryTerm = "",
+    limit = 20,
+    genre = "",
+    sortBy = "date_added",
+    orderBy = "desc"
+  } = options;
+
   let lastError = null;
 
   for (const baseUrl of BASE_URLS) {
@@ -21,6 +37,15 @@ export const fetchMovies = async (
       url.searchParams.append("limit", limit.toString());
       if (queryTerm) {
         url.searchParams.append("query_term", queryTerm);
+      }
+      if (genre && genre !== "All") {
+        url.searchParams.append("genre", genre);
+      }
+      if (sortBy) {
+        url.searchParams.append("sort_by", sortBy);
+      }
+      if (orderBy) {
+        url.searchParams.append("order_by", orderBy);
       }
 
       const response = await fetch(url.toString());
